@@ -12,6 +12,7 @@ This is an official implementation for "ContrastV2: Marrying Convolutions, Trans
 - Attention -> Flash Attention
 - Absolute Position Encoder(APE)
 - APE -> Rotary Positional Encoder(RoPE)
+- Conv for corners
 - Conv 1x1 -> RFB
 - Conv 3x3 -> Conv 5x5
 - +GRN (Normalization)
