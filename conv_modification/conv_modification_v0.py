@@ -15,15 +15,16 @@ class CustomConv2d(nn.Module):
             self.edge_filters = nn.ModuleList([nn.Conv2d(in_channels, out_channels, 1, stride=1, padding=0, bias=bias) for _ in range(padding)])
 
         self._initialize_weights()
-
+        
     def _initialize_weights(self):
         init.kaiming_normal_(self.conv.weight, nonlinearity='leaky_relu')
         if self.conv.bias is not None:
             init.constant_(self.conv.bias, 0)
-        for edge_filter in self.edge_filters:
-            init.kaiming_normal_(edge_filter.weight, nonlinearity='leaky_relu')
-            if edge_filter.bias is not None:
-                init.constant_(edge_filter.bias, 0)
+        if self.use_modification:
+            for edge_filter in self.edge_filters:
+                init.kaiming_normal_(edge_filter.weight, nonlinearity='leaky_relu')
+                if edge_filter.bias is not None:
+                    init.constant_(edge_filter.bias, 0)
 
     def forward(self, x):
         conv_out = self.conv(x)
