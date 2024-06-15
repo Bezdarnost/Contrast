@@ -4,7 +4,7 @@ from torch.nn import init
 
 
 class CustomConv2d(nn.Module):
-    def __init__(self, in_channels, out_channels, kernel_size, padding, stride=1, bias=True, use_modification=True):
+    def __init__(self, in_channels, out_channels, kernel_size, stride=1, padding=0, bias=True, use_modification=True):
         super(CustomConv2d, self).__init__()
         self.padding = padding
         self.use_modification = use_modification
