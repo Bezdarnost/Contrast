@@ -2118,9 +2118,6 @@ class Contrast(nn.Module):
         return x
     
     def forward(self, x):
-        self.mean = self.mean.type_as(x)
-        x = (x - self.mean) * self.img_range
-
         # ------------------------- 1, shallow feature extraction ------------------------- #
         x = self.conv_first(x)
         
@@ -2134,5 +2131,5 @@ class Contrast(nn.Module):
             x = self.conv_last(self.upsample(x))
         elif self.upsampler == 'pixelshuffledirect':
             x = self.upsample(x)    
-        
+            
         return x
