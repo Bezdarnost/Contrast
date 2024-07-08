@@ -10,4 +10,5 @@
 3. [MambaIR: A Simple Baseline for Image Restoration with State-Space Model](https://arxiv.org/abs/2402.15648) - Mention of diagonal information forgetting in Mamba.
 4. [VMamba: Visual State Space Model](https://arxiv.org/abs/2401.10166) - VMamba, we use their mamba blocks as a baseline
 5. [Attention Is All You Need](https://arxiv.org/abs/1706.03762) - Creators of transformers
-6. 
+6. [Mamba-R: Vision Mamba ALSO Needs Registers](https://arxiv.org/abs/2405.14858) - Mamba with Registers
+7. 
