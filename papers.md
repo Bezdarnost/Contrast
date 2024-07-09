@@ -11,4 +11,4 @@
 4. [VMamba: Visual State Space Model](https://arxiv.org/abs/2401.10166) - VMamba, we use their mamba blocks as a baseline
 5. [Attention Is All You Need](https://arxiv.org/abs/1706.03762) - Creators of transformers
 6. [Mamba-R: Vision Mamba ALSO Needs Registers](https://arxiv.org/abs/2405.14858) - Mamba with Registers
-7. 
+7. [Vision Transformers Need Registers](https://arxiv.org/abs/2309.16588) - Vision Transformers with Registers
