@@ -1,4 +1,4 @@
-# Baseline is a HAT with (S)W-MSA replaced by SS2D blocks from VMambaV2 
+Baseline is a HAT with (S)W-MSA replaced by SS2D blocks from VMambaV2 
 
 <details>
 <summary>Contrast baseline initialization:</summary>
