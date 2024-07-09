@@ -21,4 +21,19 @@ model = Contrast(
   
 </details>
 
+I've made the comparison in training speed with batch size 8 on my RTX 3060:
+
+<details>
+<summary>HAT-light hyperparameters details:</summary>
+  
+```
+Same depth, num_head, window_size, dims, upscaler and other details as my baseline Contrast
+```
+  
+</details>
+
+- HAT-light for one epoch (11,056 batches) took approximately 2 hours and 25 minutes (**145 minutes**).
+- Baseline for one epoch (11,056 batches) took around 1 hour and 30 minutes (**90 minutes**). (The baseline is approximately **38% faster**)
+
+I've made the training for 50 000 iterations and saving model weights and metrics each 5 000 iterations, trained with MSELoss and Adam(lr=2e-4)
 
