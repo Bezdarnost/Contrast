@@ -21,7 +21,7 @@ model = Contrast(
   
 </details>
 
-I've made the comparison in training speed with batch size 8 on my RTX 3060:
+I've made the comparison in training with batch size 8 and patch size 64 of low-resolution image for X4 task on my RTX 3060:
 
 <details>
 <summary>HAT-light hyperparameters details:</summary>
@@ -40,5 +40,5 @@ Same depth, num_head, window_size, dims, upscaler and other details as my baseli
 - HAT-light **12 GB**. 
 - Baseline **9 GB.** (The baseline is approximately **25% better**).
 
-I've made the training for 50 000 iterations and saving model weights and metrics each 5 000 iterations, trained with MSELoss and Adam(lr=2e-4)
+I've made the training for 50 000 iterations and saved model weights and metrics for each 5 000 iterations, trained with MSELoss and Adam(lr=2e-4)
 
