@@ -32,8 +32,13 @@ Same depth, num_head, window_size, dims, upscaler and other details as my baseli
   
 </details>
 
-- HAT-light for one epoch (11,056 batches) took approximately 2 hours and 25 minutes (**145 minutes**).
-- Baseline for one epoch (11,056 batches) took around 1 hour and 30 minutes (**90 minutes**). (The baseline is approximately **38% faster**)
+**Speed of training**
+- HAT-light for one epoch (11,056 batches) took approximately 2 hours and 25 minutes (**145 minutes**). 
+- Baseline for one epoch (11,056 batches) took around 1 hour and 30 minutes (**90 minutes**). (The baseline is approximately **38% faster**).
+
+**Memory requierements**
+- HAT-light **12 GB**. 
+- Baseline **9 GB.** (The baseline is approximately **25% better**).
 
 I've made the training for 50 000 iterations and saving model weights and metrics each 5 000 iterations, trained with MSELoss and Adam(lr=2e-4)
 
