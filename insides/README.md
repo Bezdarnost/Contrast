@@ -33,12 +33,16 @@ Same depth, num_head, window_size, dims, upscaler and other details as my baseli
 </details>
 
 **Speed of training**
-- HAT-light for one epoch (11,056 batches) took approximately 2 hours and 1 minute (**121 minutes**). 
-- Baseline for one epoch (11,056 batches) took around 1 hour and 10 minutes (**70 minutes**). (The baseline is approximately **41.3% faster**).
+
+*For one epoch (11,056 batches)
+- HAT-light - approximately 2 hours and 1 minute (**121 minutes**). 
+- Baseline - approximately 1 hour and 10 minutes (**70 minutes**). (The baseline is approximately **41.3% faster**).
+- Baseline without Positional Embeddings - approximately 1 hour and 00 minutes (**60 minutes**).
 
 **Memory requierements**
 - HAT-light **11.2 GB**. 
 - Baseline **8 GB.** (The baseline is approximately **28.6% better**).
+- Baseline without Positional Embeddings **7.8 GB**.
 
 I've made the training for 50 000 iterations and saved model weights and metrics for each 5 000 iterations, trained with MSELoss and Adam(lr=2e-4)
 
