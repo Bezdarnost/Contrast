@@ -47,5 +47,5 @@ Same depth, num_head, window_size, dims, upscaler and other details as my baseli
 I've made the training for 50 000 iterations and saved model weights and metrics for each 5 000 iterations, trained with MSELoss and Adam(lr=2e-4)
 
 <p align="center">
-  <img src="../images/baseline_vs_hat.png" width="50%">
+  <img src="../images/triple_comparison.png" width="50%">
 </p>
