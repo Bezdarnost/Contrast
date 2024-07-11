@@ -12,3 +12,4 @@
 5. [Attention Is All You Need](https://arxiv.org/abs/1706.03762) - Creators of transformers
 6. [Mamba-R: Vision Mamba ALSO Needs Registers](https://arxiv.org/abs/2405.14858) - Mamba with Registers
 7. [Vision Transformers Need Registers](https://arxiv.org/abs/2309.16588) - Vision Transformers with Registers
+8. [Triton: An Intermediate Language and Compiler for Tiled Neural Network Computations](https://www.eecs.harvard.edu/~htk/publication/2019-mapl-tillet-kung-cox.pdf) - Triton paper
