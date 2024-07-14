@@ -44,8 +44,8 @@ Same depth, num_head, window_size, dims, upscaler and other details as my baseli
 - Baseline **8 GB.** (The baseline is approximately **28.6% better**).
 - Baseline without Positional Embeddings **7.8 GB**.
 
-I've made the training for 50 000 iterations and saved model weights and metrics for each 5 000 iterations, trained with MSELoss and Adam(lr=2e-4)
+I've made the training and saved model weights and metrics for each ∼48 000 images, trained with MSELoss and Adam(lr=2e-4)
 
 <p align="center">
-  <img src="../images/triple_comparison.png" width="50%">
+  <img src="../images/triple_comparison.png" width="70%">
 </p>
