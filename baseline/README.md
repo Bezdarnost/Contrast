@@ -9,6 +9,9 @@ Using this code before the starting of training helps a lot:
 model = torch.compile(model, mode='default')
 ```
 
+Also noticed a bug with torch.compile. If I import a model from another PY file and try to start training, the pre-compile takes forever. But if I copy the model code and paste it into the same file where the model is initialized, compiled and used, the compilation is fast.:O
+
+
 You need to copy this repo:
 https://github.com/MzeroMiko/VMamba
 
