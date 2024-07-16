@@ -3,6 +3,12 @@ I recommend:
 - Torch=2.2.0
 - Triton=2.2.0
 
+Using this code before the starting of training helps a lot:
+
+```bash
+model = torch.compile(model, mode='default')
+```
+
 You need to copy this repo:
 https://github.com/MzeroMiko/VMamba
 
