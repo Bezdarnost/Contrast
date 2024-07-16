@@ -1,7 +1,7 @@
 I recommend:
 - Python=3.11
-- Torch=2.2.0
-- Triton=2.2.0
+- Torch=2.3.0
+- Triton=2.3.0
 
 Using this code before the starting of training helps a lot:
 
