@@ -1,7 +1,7 @@
 I recommend:
-Python=3.11
-Torch=2.2.0
-Triton=2.2.0
+- Python=3.11
+- Torch=2.2.0
+- Triton=2.2.0
 
 You need to copy this repo:
 https://github.com/MzeroMiko/VMamba
