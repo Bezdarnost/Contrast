@@ -27,26 +27,21 @@ I've made the comparison in training with batch size 8 and patch size 64 of low-
 <summary>HAT-light hyperparameters details:</summary>
   
 ```
-Same depth, num_head, window_size, dims, upscaler and other details as my baseline Contrast
+Same depth-1, num_head-1, window_size, dims, upscaler and other details as my baseline Contrast
 ```
   
 </details>
 
-**Speed of training**
-
-*For one epoch (11,056 batches)
-- HAT-light - approximately 2 hours and 1 minute (**121 minutes**). 
-- Baseline - approximately 1 hour and 10 minutes (**70 minutes**). (The baseline is approximately **41.3% faster**).
-- Baseline without Positional Embeddings - approximately 1 hour and 00 minutes (**60 minutes**).
-
-**Memory requierements**
-- HAT-light **11.2 GB**. 
-- Baseline **8 GB.** (The baseline is approximately **28.6% better**).
-- Baseline without Positional Embeddings **7.8 GB**.
-
 I've made the training and saved model weights and metrics for each ∼48 000 images, trained with MSELoss and Adam(lr=2e-4)
 
 For Contrast_no_pe_no_ca I've removed positional embeddings and channel attention and added more layers to save amount of parameters(∼1.5M). Also I want to mention, that I made different amount of training so that's why the lines are different lengths.
+
+Its the number of parameters of this models:
+baseline - 1,491,300
+baseline_no_pe - 1,454,796
+baseline_no_pe_bigger_ssm_ratio - 1,718,316
+mamba - 1,493,508
+baseline_no_pe_no_ca - 1,577,388
 
 <p align="center">
   <img src="../images/new_gpu.png" width="70%">
