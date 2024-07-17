@@ -46,6 +46,8 @@ Same depth, num_head, window_size, dims, upscaler and other details as my baseli
 
 I've made the training and saved model weights and metrics for each ∼48 000 images, trained with MSELoss and Adam(lr=2e-4)
 
+For Contrast_no_pe_no_ca I've removed positional embeddings and channel attention and added more layers to save amount of parameters(∼1.5M). Also I want to mention, that I made different amount of training so that's why the lines are different lengths.
+
 <p align="center">
-  <img src="../images/triple_comparison.png" width="70%">
+  <img src="../images/new_gpu.png" width="70%">
 </p>
