@@ -37,11 +37,13 @@ I've made the training and saved model weights and metrics for each ∼48 000 im
 For Contrast_no_pe_no_ca I've removed positional embeddings and channel attention and added more layers to save amount of parameters(∼1.5M). Also I want to mention, that I made different amount of training so that's why the lines are different lengths.
 
 Its the number of parameters of this models:
-baseline - 1,491,300
-baseline_no_pe - 1,454,796
-baseline_no_pe_bigger_ssm_ratio - 1,718,316
-mamba - 1,493,508
-baseline_no_pe_no_ca - 1,577,388
+| Model | Parameters |
+|----------|----------|
+| baseline | 1,491,300 |
+| baseline_no_pe | 1,454,796 |
+| baseline_no_pe_bigger_ssm_ratio | 1,718,316 |
+| mamba(pure) | 1,493,508 |
+| baseline_no_pe_no_ca | 1,577,388 |
 
 <p align="center">
   <img src="../images/new_gpu.png" width="70%">
