@@ -46,5 +46,5 @@ Its the number of parameters of this models:
 | baseline_no_pe_no_ca | 1,577,388 |
 
 <p align="center">
-  <img src="../images/new_gpu.png" width="70%">
+  <img src="../images/plot_5.png" width="75%">
 </p>
