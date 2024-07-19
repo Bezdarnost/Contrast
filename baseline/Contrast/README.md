@@ -21,7 +21,7 @@ cd kernels/selective_scan && pip install .
 
 and you also can install other libraries from requirements
 
-# Trainin:
+# Training:
 
 ```bash
 # Contrast-light, input=64x64, 4 GPUs
