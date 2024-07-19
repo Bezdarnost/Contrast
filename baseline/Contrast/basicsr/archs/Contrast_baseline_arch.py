@@ -2106,7 +2106,6 @@ class Contrast(nn.Module):
         return x
     
     def forward(self, x):
-        print(x.shape)
         self.mean = self.mean.type_as(x)
         x = (x - self.mean) * self.img_range
         
