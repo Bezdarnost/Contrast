@@ -37,9 +37,8 @@ try:
     from .mamba2.ssd_minimal import selective_scan_chunk_fn
 except:
     from mamba2.ssd_minimal import selective_scan_chunk_fn
-    
-from basicsr.utils.registry import ARCH_REGISTRY
 
+from basicsr.utils.registry import ARCH_REGISTRY
 
 # =====================================================
 # we have this class as linear and conv init differ from each other
@@ -1392,7 +1391,7 @@ class HAB(nn.Module):
         mlp_hidden_dim = int(dim * mlp_ratio)
         self.mlp = Mlp(in_features=dim, hidden_features=mlp_hidden_dim, act_layer=act_layer)
 
-    def forward(self, x, x_size, rpi_sa, attn_mask):
+    def forward(self, x, x_size):
         h, w = x_size
         b, _, c = x.shape
         # assert seq_len == h * w, "input feature has wrong size"
@@ -1483,11 +1482,6 @@ class OCAB(nn.Module):
         self.qkv = nn.Linear(dim, dim * 3,  bias=qkv_bias)
         self.unfold = nn.Unfold(kernel_size=(self.overlap_win_size, self.overlap_win_size), stride=window_size, padding=(self.overlap_win_size-window_size)//2)
 
-        # define a parameter table of relative position bias
-        self.relative_position_bias_table = nn.Parameter(
-            torch.zeros((window_size + self.overlap_win_size - 1) * (window_size + self.overlap_win_size - 1), num_heads))  # 2*Wh-1 * 2*Ww-1, nH
-
-        trunc_normal_(self.relative_position_bias_table, std=.02)
         self.softmax = nn.Softmax(dim=-1)
 
         self.proj = nn.Linear(dim,dim)
@@ -1496,7 +1490,7 @@ class OCAB(nn.Module):
         mlp_hidden_dim = int(dim * mlp_ratio)
         self.mlp = Mlp(in_features=dim, hidden_features=mlp_hidden_dim, act_layer=nn.GELU)
 
-    def forward(self, x, x_size, rpi):
+    def forward(self, x, x_size):
         h, w = x_size
         b, _, c = x.shape
 
@@ -1525,11 +1519,6 @@ class OCAB(nn.Module):
 
         q = q * self.scale
         attn = (q @ k.transpose(-2, -1))
-
-        relative_position_bias = self.relative_position_bias_table[rpi.view(-1)].view(
-            self.window_size * self.window_size, self.overlap_win_size * self.overlap_win_size, -1)  # ws*ws, wse*wse, nH
-        relative_position_bias = relative_position_bias.permute(2, 0, 1).contiguous()  # nH, ws*ws, wse*wse
-        attn = attn + relative_position_bias.unsqueeze(0)
 
         attn = self.softmax(attn)
         attn_windows = (attn @ v).transpose(1, 2).reshape(b_, nq, self.dim)
@@ -1637,20 +1626,12 @@ class AttenBlocks(nn.Module):
                             norm_layer=norm_layer
                             )
 
-        # patch merging layer
-        if downsample is not None:
-            self.downsample = downsample(input_resolution, dim=dim, norm_layer=norm_layer)
-        else:
-            self.downsample = None
-
-    def forward(self, x, x_size, params):
+    def forward(self, x, x_size):
         for blk in self.blocks:
-            x = blk(x, x_size, params['rpi_sa'], params['attn_mask'])
+            x = blk(x, x_size)
 
-        x = self.overlap_attn(x, x_size, params['rpi_oca'])
+        x = self.overlap_attn(x, x_size)
 
-        if self.downsample is not None:
-            x = self.downsample(x)
         return x
 
 
@@ -1749,9 +1730,24 @@ class RHAG(nn.Module):
         self.patch_unembed = PatchUnEmbed(
             img_size=img_size, patch_size=patch_size, in_chans=0, embed_dim=dim, norm_layer=None)
 
-    def forward(self, x, x_size, params):
-        return self.patch_embed(self.conv(self.patch_unembed(self.residual_group(x, x_size, params), x_size))) + x
+    def forward(self, x, x_size):
+        return self.patch_embed(self.conv(self.patch_unembed(self.residual_group(x, x_size), x_size))) + x
 
+
+def window_partition(x, window_size):
+    """
+    Args:
+        x: (b, h, w, c)
+        window_size (int): window size
+
+    Returns:
+        windows: (num_windows*b, window_size, window_size, c)
+    """
+    b, h, w, c = x.shape
+    
+    x = x.view(b, h // window_size, window_size, w // window_size, window_size, c)
+    windows = x.permute(0, 1, 3, 2, 4, 5).contiguous().view(-1, window_size, window_size, c)
+    return windows
 
 
 class PatchEmbed(nn.Module):
@@ -1866,7 +1862,7 @@ class UpsampleOneStep(nn.Sequential):
 
 
 @ARCH_REGISTRY.register()
-class Contrast(nn.Module):
+class Contrast_no_pe(nn.Module):
     def __init__(
         self, 
         img_range=1., # Image range. 1. or 255.
@@ -1926,12 +1922,6 @@ class Contrast(nn.Module):
             self.mean = torch.Tensor(rgb_mean).view(1, 3, 1, 1)
         else:
             self.mean = torch.zeros(1, 1, 1, 1)
-
-        # relative position index
-        relative_position_index_SA = self.calculate_rpi_sa()
-        relative_position_index_OCA = self.calculate_rpi_oca()
-        self.register_buffer('relative_position_index_SA', relative_position_index_SA)
-        self.register_buffer('relative_position_index_OCA', relative_position_index_OCA)
             
         # ------------------------- 1, shallow feature extraction ------------------------- #
         self.conv_first = nn.Conv2d(in_chans, dims, 3, 1, 1)
@@ -2028,85 +2018,21 @@ class Contrast(nn.Module):
             nn.init.constant_(m.bias, 0)
             nn.init.constant_(m.weight, 1.0)
     
-    def calculate_rpi_sa(self):
-        # calculate relative position index for SA
-        coords_h = torch.arange(self.window_size)
-        coords_w = torch.arange(self.window_size)
-        coords = torch.stack(torch.meshgrid([coords_h, coords_w]))  # 2, Wh, Ww
-        coords_flatten = torch.flatten(coords, 1)  # 2, Wh*Ww
-        relative_coords = coords_flatten[:, :, None] - coords_flatten[:, None, :]  # 2, Wh*Ww, Wh*Ww
-        relative_coords = relative_coords.permute(1, 2, 0).contiguous()  # Wh*Ww, Wh*Ww, 2
-        relative_coords[:, :, 0] += self.window_size - 1  # shift to start from 0
-        relative_coords[:, :, 1] += self.window_size - 1
-        relative_coords[:, :, 0] *= 2 * self.window_size - 1
-        relative_position_index = relative_coords.sum(-1)  # Wh*Ww, Wh*Ww
-        return relative_position_index
-
-    def calculate_rpi_oca(self):
-        # calculate relative position index for OCA
-        window_size_ori = self.window_size
-        window_size_ext = self.window_size + int(self.overlap_ratio * self.window_size)
-
-        coords_h = torch.arange(window_size_ori)
-        coords_w = torch.arange(window_size_ori)
-        coords_ori = torch.stack(torch.meshgrid([coords_h, coords_w]))  # 2, ws, ws
-        coords_ori_flatten = torch.flatten(coords_ori, 1)  # 2, ws*ws
-
-        coords_h = torch.arange(window_size_ext)
-        coords_w = torch.arange(window_size_ext)
-        coords_ext = torch.stack(torch.meshgrid([coords_h, coords_w]))  # 2, wse, wse
-        coords_ext_flatten = torch.flatten(coords_ext, 1)  # 2, wse*wse
-
-        relative_coords = coords_ext_flatten[:, None, :] - coords_ori_flatten[:, :, None]   # 2, ws*ws, wse*wse
-
-        relative_coords = relative_coords.permute(1, 2, 0).contiguous()  # ws*ws, wse*wse, 2
-        relative_coords[:, :, 0] += window_size_ori - window_size_ext + 1  # shift to start from 0
-        relative_coords[:, :, 1] += window_size_ori - window_size_ext + 1
-
-        relative_coords[:, :, 0] *= window_size_ori + window_size_ext - 1
-        relative_position_index = relative_coords.sum(-1)
-        return relative_position_index
-    
-    def calculate_mask(self, x_size):
-        # calculate attention mask for SW-MSA
-        h, w = x_size
-        img_mask = torch.zeros((1, h, w, 1))  # 1 h w 1
-        h_slices = (slice(0, -self.window_size), slice(-self.window_size,
-                                                       -self.shift_size), slice(-self.shift_size, None))
-        w_slices = (slice(0, -self.window_size), slice(-self.window_size,
-                                                       -self.shift_size), slice(-self.shift_size, None))
-        cnt = 0
-        for h in h_slices:
-            for w in w_slices:
-                img_mask[:, h, w, :] = cnt
-                cnt += 1
-
-        mask_windows = window_partition(img_mask, self.window_size)  # nw, window_size, window_size, 1
-        mask_windows = mask_windows.view(-1, self.window_size * self.window_size)
-        attn_mask = mask_windows.unsqueeze(1) - mask_windows.unsqueeze(2)
-        attn_mask = attn_mask.masked_fill(attn_mask != 0, float(-100.0)).masked_fill(attn_mask == 0, float(0.0))
-
-        return attn_mask
-    
     def forward_features(self, x):
         x_size = (x.shape[2], x.shape[3])
-
-        # Calculate attention mask and relative position index in advance to speed up inference. 
-        # The original code is very time-consuming for large window size.
-        attn_mask = self.calculate_mask(x_size).to(x.device)
-        params = {'attn_mask': attn_mask, 'rpi_sa': self.relative_position_index_SA, 'rpi_oca': self.relative_position_index_OCA}
 
         x = self.patch_embed(x)
 
         for layer in self.layers:
-            x = layer(x, x_size, params)
-            
+            x = layer(x, x_size)
+
         x = self.norm(x)  # b seq_len c
         x = self.patch_unembed(x, x_size)
 
         return x
     
     def forward(self, x):
+        
         self.mean = self.mean.type_as(x)
         x = (x - self.mean) * self.img_range
         
@@ -2115,7 +2041,7 @@ class Contrast(nn.Module):
         
         # ------------------------- 2, deep feature extraction ------------------------- #
         x = self.conv_after_body(self.forward_features(x)) + x
-        
+
         # ------------------------- 3, high quality image reconstruction ------------------------- #
         if self.upsampler == 'pixelshuffle':
             # for classical SR
@@ -2123,9 +2049,7 @@ class Contrast(nn.Module):
             x = self.conv_last(self.upsample(x))
         elif self.upsampler == 'pixelshuffledirect':
             x = self.upsample(x)    
-
+        
         x = x / self.img_range + self.mean
         
         return x
-        
-
