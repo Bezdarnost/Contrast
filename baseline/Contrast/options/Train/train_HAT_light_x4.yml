@@ -41,13 +41,15 @@ datasets:
 
 # network structures
 network_g:
-  type: Contrast
+  type: HAT
   upscale: 4
   in_chans: 3
   img_size: 64
   img_range: 1.
-  dims: 48
-  depths: [6, 6, 6]
+  window_size: 16
+  overlap_ratio: 0.5
+  embed_dim: 48
+  depths: [5, 5, 5]
   num_heads: [6, 6, 6]
   resi_connection: '1conv'
   upsampler: 'pixelshuffledirect'

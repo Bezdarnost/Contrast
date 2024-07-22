@@ -41,14 +41,21 @@ datasets:
 
 # network structures
 network_g:
-  type: Contrast
+  type: Contrast_no_pe_no_cab
   upscale: 4
   in_chans: 3
   img_size: 64
   img_range: 1.
-  dims: 48
-  depths: [6, 6, 6]
-  num_heads: [6, 6, 6]
+  window_size: 16
+  overlap_ratio: 0.5
+  mlp_ratio: 2.0
+  dims: 54
+  depths: [6, 6, 6, 6]
+  num_heads: [6, 6, 6, 6]
+  ssm_d_state: 1.0
+  ssm_ratio: 1.0
+  ssm_init: 'v2'
+  forward_type: 'v05_noz'
   resi_connection: '1conv'
   upsampler: 'pixelshuffledirect'
 
