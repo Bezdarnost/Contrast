@@ -11,15 +11,30 @@ class DATModel(SRModel):
     def test(self):
         self.use_chop = self.opt['val']['use_chop'] if 'use_chop' in self.opt['val'] else False
         if not self.use_chop:
+            # Get the original height and width
+            orig_h, orig_w = self.lq.shape[-2], self.lq.shape[-1]
+
+            # Calculate the padding sizes to make dimensions divisible by 16
+            pad_h = (16 - orig_h % 16) % 16
+            pad_w = (16 - orig_w % 16) % 16
+
+            # Apply padding
+            self.lq_padded = F.pad(self.lq, (0, pad_w, 0, pad_h), mode='reflect')
+
             if hasattr(self, 'net_g_ema'):
                 self.net_g_ema.eval()
                 with torch.no_grad():
-                    self.output = self.net_g_ema(self.lq)
+                    # Forward pass with the padded input
+                   self.output_padded = self.net_g_ema(self.lq_padded)
             else:
                 self.net_g.eval()
                 with torch.no_grad():
-                    self.output = self.net_g(self.lq)
+                    # Forward pass with the padded input
+                    self.output_padded = self.net_g(self.lq_padded)
                 self.net_g.train()
+
+            # Crop the output to the original size
+            self.output = self.output_padded[..., :orig_h*4, :orig_w*4]
 
         # test by partitioning
         else:
