@@ -39,12 +39,12 @@ For Contrast_no_pe_no_ca I've removed positional embeddings and channel attentio
 Its the number of parameters of this models:
 | Model | Parameters |
 |----------|----------|
-| baseline | 1,491,300 |
-| baseline_no_pe | 1,454,796 |
-| baseline_no_pe_bigger_ssm_ratio | 1,718,316 |
-| mamba(pure) | 1,493,508 |
-| baseline_no_pe_no_ca | 1,577,388 |
+| baseline | 745,572 |
+| baseline_no_pe | 718,194 |
+| baseline_no_pe_no_cab | 764,202 |
+| mamba(pure) | 759,108 |
+| hat_light | 771,099 |
 
 <p align="center">
-  <img src="../images/plot_5.png" width="75%">
+  <img src="../images/mamba_light_train.png" width="75%">
 </p>
