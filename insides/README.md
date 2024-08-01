@@ -47,7 +47,7 @@ Its the number of parameters of this models:
 
 # cropped
 <p align="center">
-  <img src="../images/base_training_1_cropped.png" width="75%">
+  <img src="../images/base_training_1_cropped_enhanced.png" width="75%">
 </p>
 
 # full plot
