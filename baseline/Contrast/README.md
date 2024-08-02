@@ -1,3 +1,13 @@
+# NEW TRAININGS
+
+```bash
+# Contrast-light, input=64x64, 4 GPUs
+python -m torch.distributed.launch --nproc_per_node=4 --master_port=4321 train.py -opt options/Train/train_Contrast_baseline_gated_convffn_no_gated_light_x4.yml --launcher pytorch
+
+# HAT-light(pure transformer)
+python -m torch.distributed.launch --nproc_per_node=4 --master_port=4321 train.py -opt options/Train/train_Contrast_baseline_gated_convffn_light_x4.yml --launcher pytorch
+```
+
 I recommend:
 - Python=3.11
 - Torch=2.3.0
