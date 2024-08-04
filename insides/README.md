@@ -9,43 +9,28 @@
   
 </details>
 
+<details>
+<summary>Thesis Findings on Hybrid Transformer and Mamba Architecture</summary>
+
+1. **Pure Mamba Performance**:
+   - **Finding**: Pure Mamba architecture performs poorly, as expected, due to its limited ability to accurately copy information. Its architecture relies on compressed and hidden representations, which only allow for approximate copying.
+   - **Explanation**: The inherent design of Mamba, with its focus on compressed representations, restricts its precision in copying data, leading to suboptimal performance.
+
+2. **Positional Embeddings in Hybrids**:
+   - **Finding**: The hybrid architecture can perform equally well without positional embeddings (PE) as with them. Mamba blocks can learn to encode pixel position information for transformer blocks, but this requires time. Initially, models with PE perform better, but eventually, the performance equalizes, with a slight advantage for models without PE.
+   - **Explanation**: Omitting PE accelerates the model and slightly enhances its accuracy. This finding suggests that Mamba blocks can compensate for the lack of positional information, though this learning process impacts early training phases.
+
+3. **Channel Attention Block (CAB) Removal**:
+   - **Finding**: Removing the Channel Attention Block improves performance. The parameters freed up by removing CAB can be reallocated to other parts of the model, resulting in higher accuracy.
+   - **Explanation**: The reallocation of parameters previously used by CAB to other model components enhances overall performance, making the architecture more efficient.
+
+4. **Attention Blocks Enhancing Mamba**:
+   - **Finding**: Adding attention blocks after several Mamba layers (6 in this case) significantly boosts performance. The attention blocks mitigate the weaknesses of Mamba, resulting in a powerful combination that achieves high performance and accuracy.
+   - **Explanation**: Attention blocks compensate for the limitations of Mamba, creating a hybrid that trains faster by approximately 25% on Set5 benchmarks and achieves similar PSNR. Further tests on other benchmarks and inference speed comparisons are planned, expecting an increased performance gap in inference.
+
+</details>
+
 Baseline is a HAT with (S)W-MSA replaced by SS2D blocks from VMambaV2 
-
-<details>
-<summary>Contrast baseline initialization:</summary>
-  
-```
-model = Contrast(
-        img_range=1., resi_connection='1conv', window_size=16, overlap_ratio=0.5,
-        depths=[6, 6, 6, 6], num_heads=[6, 6, 6, 6],
-        patch_size=1, in_chans=3, num_out_ch=3, dims=60, upscale_dims=48,
-        ssm_d_state=1, ssm_ratio=1.0, ssm_dt_rank="auto", ssm_act_layer="gelu",
-        ssm_conv=3, ssm_conv_bias=False,
-        ssm_init="v2", forward_type="v05_noz", 
-        mlp_ratio=2.0, mlp_act_layer="gelu", gmlp=False,
-        patch_norm=True, norm_layer=nn.LayerNorm,
-        downsample_version="v3", patchembed_version="v2", 
-        use_checkpoint=False, posembed=False, img_size=64, 
-        upsampler='pixelshuffledirect', upscale=4, channel_first=False
-    )
-```
-  
-</details>
-
-I've made the comparison in training with batch size 8 and patch size 64 of low-resolution image for X4 task on my RTX 3060:
-
-<details>
-<summary>HAT-light hyperparameters details:</summary>
-  
-```
-Same depth-1, num_head-1, window_size, dims, upscaler and other details as my baseline Contrast
-```
-  
-</details>
-
-I've made the training and saved model weights and metrics for each ∼48 000 images, trained with MSELoss and Adam(lr=2e-4)
-
-For Contrast_no_pe_no_ca I've removed positional embeddings and channel attention and added more layers to save amount of parameters(∼1.5M). Also I want to mention, that I made different amount of training so that's why the lines are different lengths.
 
 Its the number of parameters of this models:
 | Model | Parameters |
