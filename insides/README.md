@@ -1,3 +1,14 @@
+<details>
+<summary>Plans and hypothesis</summary>
+
+- I need to add registers in model
+- Replace Softmax to Clipped Softmax as in this [paper](https://arxiv.org/abs/2306.12929) (I am checking)
+- Try to use Windows in some Mamba blocks to better manage diagonal information on images
+- Probably use Multi-Query Attention(MQA)
+- Use mamba-2 insted of mamba-1 blocks
+  
+</details>
+
 Baseline is a HAT with (S)W-MSA replaced by SS2D blocks from VMambaV2 
 
 <details>
