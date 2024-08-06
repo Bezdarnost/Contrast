@@ -2,7 +2,7 @@
 <summary>Plans and hypothesis</summary>
 
 - I need to add registers in model
-- Replace Softmax to Clipped Softmax as in this [paper](https://arxiv.org/abs/2306.12929) (I am checking)
+- Replace Softmax to Clipped Softmax as in this [paper](https://arxiv.org/abs/2306.12929). It makes model slower by 20%, not worth it
 - Try to use Windows in some Mamba blocks to better manage diagonal information on images
 - Probably use Multi-Query Attention(MQA)
 - Use mamba-2 insted of mamba-1 blocks
