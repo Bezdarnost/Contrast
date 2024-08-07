@@ -3,6 +3,7 @@
 
 # Ideas, that haven't tested yet
 - Normalization sandwich
+- Give information from all 6 mambas directly to transformer
 - Use mamba-2 insted of mamba-1 blocks
 
 # Tested ideas, that don't worth additional work now
