@@ -1,10 +1,10 @@
 <details>
 <summary>Plans and hypothesis</summary>
 
-- I need to add registers in model
-- Replace Softmax to Clipped Softmax as in this [paper](https://arxiv.org/abs/2306.12929). It makes model slower by 20%, not worth it
-- Try to use Windows in some Mamba blocks to better manage diagonal information on images
-- Probably use Multi-Query Attention(MQA)
+- I need to add registers in model. New thought: Its very hard to implement in vmamba blocks registers, because they use 2D input, not 1D as a transformers or VIM
+- Replace Softmax to Clipped Softmax as in this [paper](https://arxiv.org/abs/2306.12929). New thought: It makes model slower by 20%, not worth it
+- Try to use Windows in some Mamba blocks to better manage diagonal information on images. New thought: Its decrease the model capability, overlap cross attention blocks from Contrast have already managed well with problem with diagonal information.
+- Probably use Multi-Query Attention(MQA). New thought: basically don't worth it, because window attention is already very powerful
 - Use mamba-2 insted of mamba-1 blocks
   
 </details>
