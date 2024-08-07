@@ -2,8 +2,8 @@
 <summary>Plans and hypothesis</summary>
 
 # Ideas, that haven't tested yet
+- Normalization sandwich
 - Use mamba-2 insted of mamba-1 blocks
-- Use transformers blocks in ratio 5:1, not 6:1
 
 # Tested ideas, that don't worth additional work now
 - I need to add registers in model. New thought: Its very hard to implement in vmamba blocks registers, because they use 2D input, not 1D as a transformers or VIM
