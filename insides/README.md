@@ -46,12 +46,8 @@ Its the number of parameters of this models:
 | mamba(pure) | 759,108 |
 | hat_light | 771,099 |
 
-# cropped
-<p align="center">
-  <img src="../images/base_training_1_cropped_enhanced.png" width="75%">
-</p>
 
 # full plot
 <p align="center">
-  <img src="../images/base_training_1.png" width="75%">
+  <img src="../images/baseline_urban100.png" width="75%">
 </p>
