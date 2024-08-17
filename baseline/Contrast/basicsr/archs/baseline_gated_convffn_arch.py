@@ -1949,7 +1949,7 @@ class Contrast_base_gated_convffn(nn.Module):
                 _SS2D=_SS2D)
             self.layers.append(layer)
 
-        self.norm = norm_layer(dims)
+        #self.norm = norm_layer(dims)
         
         # build the last conv layer in deep feature extraction
         if resi_connection == '1conv':
@@ -1989,7 +1989,7 @@ class Contrast_base_gated_convffn(nn.Module):
         for layer in self.layers:
             x = layer(x, x_size)
 
-        x = self.norm(x)  # b seq_len c
+        #x = self.norm(x)  # b seq_len c
         x = self.patch_unembed(x, x_size)
 
         return x
