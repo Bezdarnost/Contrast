@@ -57,7 +57,7 @@ network_g:
   ssm_init: 'v2'
   forward_type: 'v05_noz'
   resi_connection: '1conv'
-  upsampler: 'pixelshuffle'
+  upsampler: 'pixelshuffledirect'
 
 # path
 path:
