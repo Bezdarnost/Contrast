@@ -83,7 +83,7 @@ train:
 
   # losses
   pixel_opt:
-    type: L1Loss
+    type: MSELoss
     loss_weight: 1.0
     reduction: mean
 
