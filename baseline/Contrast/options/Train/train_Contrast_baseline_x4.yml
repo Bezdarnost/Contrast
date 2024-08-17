@@ -41,7 +41,7 @@ datasets:
 
 # network structures
 network_g:
-  type: Contrast_base_gated_convffn
+  type: Contrast_baseline
   upscale: 4
   in_chans: 3
   img_size: 64
