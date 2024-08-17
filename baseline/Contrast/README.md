@@ -1,11 +1,8 @@
 # NEW TRAININGS
 
 ```bash
-# Contrast-light, input=64x64, 4 GPUs
-python -m torch.distributed.launch --nproc_per_node=4 --master_port=4321 train.py -opt options/Train/train_Contrast_baseline_gated_convffn_no_gated_light_x4.yml --launcher pytorch
-
-# HAT-light(pure transformer)
-python -m torch.distributed.launch --nproc_per_node=4 --master_port=4321 train.py -opt options/Train/train_Contrast_baseline_gated_convffn_light_x4.yml --launcher pytorch
+# Baseline training, 4 GPUs 4 batch size
+python -m torch.distributed.launch --nproc_per_node=4 --master_port=4321 train.py -opt options/Train/train_Contrast_baseline_x4.yml --launcher pytorch
 ```
 
 I recommend:
@@ -30,6 +27,15 @@ cd kernels/selective_scan && pip install .
 ```
 
 and you also can install other libraries from requirements
+
+# Previous trainings:
+```bash
+# Contrast-light, input=64x64, 4 GPUs
+python -m torch.distributed.launch --nproc_per_node=4 --master_port=4321 train.py -opt options/Train/train_Contrast_baseline_gated_convffn_no_gated_light_x4.yml --launcher pytorch
+
+# HAT-light(pure transformer)
+python -m torch.distributed.launch --nproc_per_node=4 --master_port=4321 train.py -opt options/Train/train_Contrast_baseline_gated_convffn_light_x4.yml --launcher pytorch
+```
 
 # Training with torchrun:
 
