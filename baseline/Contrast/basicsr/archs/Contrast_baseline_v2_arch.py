@@ -1931,9 +1931,8 @@ class Contrast_baseline(nn.Module):
             #self.conv_last = nn.Conv2d(num_feat, num_out_ch, 3, 1, 1)
             self.upsample = nn.Sequential(
                 nn.PixelShuffle(2),
-                nn.Conv2d(dims//4, dims//16*4, 3, 1, 1),
-                nn.PixelShuffle(2),
-                nn.Conv2d(dims//16, 3, 3, 1, 1))
+                nn.Conv2d(dims//4, 12, 3, 1, 1),
+                nn.PixelShuffle(2))
         elif self.upsampler == 'pixelshuffledirect':
             # for lightweight SR (to save parameters)
             self.upsample = UpsampleOneStep(upscale, dims, num_out_ch,
