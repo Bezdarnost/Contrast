@@ -50,8 +50,8 @@ network_g:
   overlap_ratio: 0.5
   mlp_ratio: 2.0
   dims: 180
-  depths: [6, 6, 6, 6, 6, 6]
-  num_heads: [6, 6, 6, 6, 6, 6]
+  depths: [6, 6, 6, 6, 6, 6, 6, 6]
+  num_heads: [6, 6, 6, 6, 6, 6, 6, 6]
   ssm_d_state: 1.0
   ssm_ratio: 1.0
   ssm_init: 'v2'
