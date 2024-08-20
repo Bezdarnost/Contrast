@@ -11,8 +11,8 @@ datasets:
     task: SR
     name: DF2K
     type: PairedImageDataset
-    dataroot_gt: datasets/DIV2K/HR
-    dataroot_lq: datasets/DIV2K/LR_bicubic/X4
+    dataroot_gt: /data/dataset/SR/DF2K/HR
+    dataroot_lq: /data/dataset/SR/DF2K/LR_bicubic/X4
     filename_tmpl: '{}x4'
     io_backend:
       type: disk
@@ -24,7 +24,7 @@ datasets:
     # data loader
     use_shuffle: True
     num_worker_per_gpu: 12
-    batch_size_per_gpu: 2
+    batch_size_per_gpu: 8
     dataset_enlarge_ratio: 1
     prefetch_mode: ~
 
