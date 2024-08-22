@@ -2,7 +2,7 @@
 
 ```bash
 # Light version
-python -m torch.distributed.launch --nproc_per_node=4 --master_port=4321 train.py -opt options/Train/train_Contrast_baseline_v3_x4.yml  --launcher pytorch
+python -m torch.distributed.launch --nproc_per_node=4 --master_port=4321 train.py -opt options/Train/train_Contrast_baseline_v4_x4.yml  --launcher pytorch
 ```
 
 I recommend:
