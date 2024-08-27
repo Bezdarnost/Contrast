@@ -1,9 +1,7 @@
 # NEW TRAININGS
 
-```bash
-python -m torch.distributed.launch --nproc_per_node=4 --master_port=4321 train.py -opt options/Train/train_Contrast_baseline_v4_no_norm_pixelshuffledirect_x4.yml  --launcher pytorch
-python -m torch.distributed.launch --nproc_per_node=4 --master_port=4321 train.py -opt options/Train/train_Contrast_baseline_v4_no_norm_x4.yml  --launcher pytorch
-python -m torch.distributed.launch --nproc_per_node=4 --master_port=4321 train.py -opt options/Train/train_Contrast_baseline_v4_norm_x4.yml  --launcher pytorch
+```bash 
+python -m torch.distributed.launch --nproc_per_node=4 --master_port=4321 train.py -opt options/Train/train_Contrast_baseline_v4_no_gcffn_x4.yml  --launcher pytorch
 ```
 
 I recommend:
@@ -31,6 +29,10 @@ and you also can install other libraries from requirements
 
 # Previous trainings:
 ```bash
+python -m torch.distributed.launch --nproc_per_node=4 --master_port=4321 train.py -opt options/Train/train_Contrast_baseline_v4_no_norm_pixelshuffledirect_x4.yml  --launcher pytorch
+python -m torch.distributed.launch --nproc_per_node=4 --master_port=4321 train.py -opt options/Train/train_Contrast_baseline_v4_no_norm_x4.yml  --launcher pytorch
+python -m torch.distributed.launch --nproc_per_node=4 --master_port=4321 train.py -opt options/Train/train_Contrast_baseline_v4_norm_x4.yml  --launcher pytorch
+
 # Baseline training, 4 GPUs 4 batch size
 python -m torch.distributed.launch --nproc_per_node=4 --master_port=4321 train.py -opt options/Train/train_Contrast_baseline_x4.yml --launcher pytorch
 
