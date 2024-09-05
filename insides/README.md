@@ -105,6 +105,7 @@ I didn't check their PSNR reproducibility, we need to recheck HAT and DRCT, beca
 
 | Model | Parameters | Set5(x4) PSNR(dB) |
 |----------|----------|----------|
+| Contrast-S(current) | 6.9M | 32.89 |
 | SwinIR | 11.9M | 32.92 |
 | HAT | 20.8M | 33.04 |
 | DRCT | 14.1M | 33.11 |
