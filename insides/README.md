@@ -100,3 +100,16 @@ On the right side the baseline and on the left side with my change
 </p>
 
 Further experiments might reveal additional findings.
+
+I didn't check their PSNR reproducibility, we need to recheck HAT and DRCT, because they can be incorrect. Large models trained with ImageNet
+
+| Model | Parameters | Set5(x4) PSNR(dB) |
+|----------|----------|----------|
+| SwinIR | 11.9M | 32.92 |
+| HAT | 20.8M | 33.04 |
+| DRCT | 14.1M | 33.11 |
+| CAT | 16.6M | 33.08 |
+| DAT | 14.8M | 33.08 |
+| RGT | 13.37M | 33.12 |
+| HAT-L | 40.8M | 33.30 |
+| DRCT-L | 27.6M | 33.37 |
