@@ -1276,16 +1276,8 @@ class HAB(nn.Module):
         b, _, c = x.shape
         # assert seq_len == h * w, "input feature has wrong size"
 
-        shortcut = x
-        x = self.norm1(x)
-        x = x.view(b, h, w, c)
-        
-        # Mamba path
-        mamba_x = self.mamba(x)
-        mamba_x = mamba_x.view(b, h * w, c)
+        x = self.mamba(self.norm1(x).view(b, h, w, c)).view(b, h * w, c) + x
 
-        # FFN
-        x = shortcut + mamba_x
         x = x + self.mlp(self.norm1(x), x_size)
 
         return x
