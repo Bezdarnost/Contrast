@@ -1278,7 +1278,8 @@ class HAB(nn.Module):
 
         x = self.mamba(self.norm1(x).view(b, h, w, c)).view(b, h * w, c) + x
 
-        x = x + self.mlp(self.norm1(x), x_size)
+        x = x + self.mlp(self.norm2(x), x_size)
+
 
         return x
 
