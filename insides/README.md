@@ -106,9 +106,10 @@ I didn't check their PSNR reproducibility, we need to recheck HAT and DRCT, beca
 | Model | Parameters | Set5(x4) PSNR(dB) |
 |----------|----------|----------|
 | Contrast-S(current) | 7.5M | 32.92-32.93 |
-| HAT-S | 9.6M | 32.92 |
-| SwinIR | 11.9M | 32.92 |
-| HAT | 20.8M | 33.04 |
+| [CVPR2023]HAT-S | 9.6M | 32.92 |
+| [ICCV2021]SwinIR | 11.9M | 32.92 |
+| [CVPR2023]HAT | 20.8M | 33.04 |
+| [ECCV2024]MambaIR | 16.7 | 32.03 |
 | DRCT | 14.1M | 33.11 |
 | CAT | 16.6M | 33.08 |
 | DAT | 14.8M | 33.08 |
