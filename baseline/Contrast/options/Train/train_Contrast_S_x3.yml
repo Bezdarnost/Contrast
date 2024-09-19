@@ -12,7 +12,7 @@ datasets:
     name: DF2K
     type: PairedImageDataset
     dataroot_gt: datasets/DF2K/HR
-    dataroot_lq: datasets/DFK/LR_bicubic/X2
+    dataroot_lq: datasets/DFK/LR_bicubic/X3
     filename_tmpl: '{}x4'
     io_backend:
       type: disk
