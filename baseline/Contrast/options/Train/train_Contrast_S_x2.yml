@@ -33,8 +33,8 @@ datasets:
     name: Set5
     type: PairedImageDataset
     dataroot_gt: datasets/benchmark/Set5/HR
-    dataroot_lq: datasets/benchmark/Set5/LR_bicubic/X4
-    filename_tmpl: '{}x4'
+    dataroot_lq: datasets/benchmark/Set5/LR_bicubic/X2
+    filename_tmpl: '{}x2'
     io_backend:
       type: disk
 
