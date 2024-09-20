@@ -15,8 +15,8 @@ class ContrastModel(SRModel):
             orig_h, orig_w = self.lq.shape[-2], self.lq.shape[-1]
 
             # Calculate the padding sizes to make dimensions divisible by 16
-            pad_h = (16 - orig_h % 16) % 16
-            pad_w = (16 - orig_w % 16) % 16
+            pad_h = (self.opt['network_g']['window_size'] - orig_h % self.opt['network_g']['window_size']) % self.opt['network_g']['window_size']
+            pad_w = (self.opt['network_g']['window_size'] - orig_w % self.opt['network_g']['window_size']) % self.opt['network_g']['window_size']
 
             # Apply padding
             self.lq_padded = F.pad(self.lq, (0, pad_w, 0, pad_h), mode='reflect')
