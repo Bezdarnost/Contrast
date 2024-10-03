@@ -125,6 +125,6 @@ I didn't check their PSNR reproducibility, we need to recheck HAT and DRCT, beca
 | [ICCV2023]SRFormer | 10.5M | 38.45 | 34.21 | 32.51 |
 | [CVPR2023]HAT | 20.8M | 38.63 | 34.86 | 32.62 |
 | [ICCV2023]DAT | 14.8M | 38.58 | 34.81 | 32.61 |
-| [ICLR2024]RGT | 13.37M | 38.59 | 34.83 | 32.62 |
-| [ICCV2024]MambaIR | 31.5M | 38.57 | 34.67 | 32.58 |
+| [ECLR2024]RGT | 13.37M | 38.59 | 34.83 | 32.62 |
+| [ECCV2024]MambaIR | 31.5M | 38.57 | 34.67 | 32.58 |
 | Contrast | 14.1M | 38.58 | 34.65 | 32.58
