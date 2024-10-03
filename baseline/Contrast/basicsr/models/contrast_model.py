@@ -26,6 +26,7 @@ class ContrastModel(SRModel):
                 with torch.no_grad():
                     # Forward pass with the padded input
                    self.output_padded = self.net_g_ema(self.lq_padded)
+                self.net_g_ema.train()
             else:
                 self.net_g.eval()
                 with torch.no_grad():
@@ -34,7 +35,7 @@ class ContrastModel(SRModel):
                 self.net_g.train()
 
             # Crop the output to the original size
-            self.output = self.output_padded[..., :orig_h*4, :orig_w*4]
+            self.output = self.output_padded[..., :orig_h*self.opt['network_g']['upscale'], :orig_w*self.opt['network_g']['upscale']]
 
         # test by partitioning
         else:
