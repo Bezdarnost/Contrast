@@ -116,3 +116,12 @@ I didn't check their PSNR reproducibility, we need to recheck HAT and DRCT, beca
 | RGT | 13.37M | 33.12 |
 | HAT-L | 40.8M | 33.30 |
 | DRCT-L | 27.6M | 33.37 |
+
+| Model | Parameters | Set5(x2) PSNR(dB) | Set14(x2) | BSD100(x2) |
+|----------|----------|----------|---------| ---------| 
+| [CVPR2023]HAT | 20.8M | 38.63 | 34.86 | 32.62 |
+| [NIPS2022]CAT_A | 16.6M | 38.48 | 34.53 | 32.56 |
+| [NIPS2022]CAT_R | 16.6M | 38.51 | 34.78 | 32.59 |
+| [ICCV2023]DAT | 14.8M | 38.58 | 34.81 | 32.61 |
+| [ICLR2024]RGT | 13.37M | 38.59 | 34.83 | 32.62 |
+| Contrast | 14.1M | 38.58 | 34.64 | 32.58
