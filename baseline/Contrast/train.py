@@ -13,7 +13,6 @@ from basicsr.utils import (AvgTimer, MessageLogger, check_resume, get_env_info, 
                            init_tb_logger, init_wandb_logger, make_exp_dirs, mkdir_and_rename, scandir)
 from basicsr.utils.options import copy_opt_file, dict2str, parse_options
 
-
 def init_tb_loggers(opt):
     # initialize wandb logger before tensorboard logger to allow proper sync
     if (opt['logger'].get('wandb') is not None) and (opt['logger']['wandb'].get('project')
@@ -150,8 +149,10 @@ def train_pipeline(root_path):
     logger.info(f'Start training from epoch: {start_epoch}, iter: {current_iter}')
     data_timer, iter_timer = AvgTimer(), AvgTimer()
     start_time = time.time()
+    real_iter = 0
 
     for epoch in range(start_epoch, total_epochs + 1):
+        accumulation_steps = opt['datasets']['train'].get('accumulation_steps', 1)
         train_sampler.set_epoch(epoch)
         prefetcher.reset()
         train_data = prefetcher.next()
@@ -162,35 +163,33 @@ def train_pipeline(root_path):
             current_iter += 1
             if current_iter > total_iters:
                 break
-            # update learning rate
-            model.update_learning_rate(current_iter, warmup_iter=opt['train'].get('warmup_iter', -1))
-            # training
+
             model.feed_data(train_data)
-            model.optimize_parameters(current_iter)
-            iter_timer.record()
-            if current_iter == 1:
-                # reset start time in msg_logger for more accurate eta_time
-                # not work in resume mode
-                msg_logger.reset_start_time()
-            # log
-            if current_iter % opt['logger']['print_freq'] == 0:
-                log_vars = {'epoch': epoch, 'iter': current_iter}
-                log_vars.update({'lrs': model.get_current_learning_rate()})
-                log_vars.update({'time': iter_timer.get_avg_time(), 'data_time': data_timer.get_avg_time()})
-                log_vars.update(model.get_current_log())
-                msg_logger(log_vars)
+            model.optimize_parameters(current_iter, accumulation_steps)
 
-            # save models and training states
-            if current_iter % opt['logger']['save_checkpoint_freq'] == 0:
-                logger.info('Saving models and training states.')
-                model.save(epoch, current_iter)
+            if (current_iter % accumulation_steps) == 0:
+                real_iter += 1
+                iter_timer.record()
 
-            # validation
-            if opt.get('val') is not None and (current_iter % opt['val']['val_freq'] == 0):
-                if len(val_loaders) > 1:
-                    logger.warning('Multiple validation datasets are *only* supported by SRModel.')
-                for val_loader in val_loaders:
-                    model.validation(val_loader, current_iter, tb_logger, opt['val']['save_img'])
+                if real_iter == 1:
+                    msg_logger.reset_start_time()
+
+                if real_iter % opt['logger']['print_freq'] == 0:
+                    log_vars = {'epoch': epoch, 'iter': real_iter}
+                    log_vars.update({'lrs': model.get_current_learning_rate()})
+                    log_vars.update({'time': iter_timer.get_avg_time(), 'data_time': data_timer.get_avg_time()})
+                    log_vars.update(model.get_current_log())
+                    msg_logger(log_vars)
+
+                if real_iter % opt['logger']['save_checkpoint_freq'] == 0:
+                    logger.info('Saving models and training states.')
+                    model.save(epoch, real_iter)
+
+                if opt.get('val') is not None and (real_iter % opt['val']['val_freq'] == 0):
+                    if len(val_loaders) > 1:
+                        logger.warning('Multiple validation datasets are *only* supported by SRModel.')
+                    for val_loader in val_loaders:
+                        model.validation(val_loader, real_iter, tb_logger, opt['val']['save_img'])
 
             data_timer.start()
             iter_timer.start()
