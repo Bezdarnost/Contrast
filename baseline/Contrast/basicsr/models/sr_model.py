@@ -89,8 +89,10 @@ class SRModel(BaseModel):
         if 'gt' in data:
             self.gt = data['gt'].to(self.device)
 
-    def optimize_parameters(self, current_iter):
-        self.optimizer_g.zero_grad()
+    def optimize_parameters(self, current_iter, accumulation_steps):
+        if current_iter % accumulation_steps == 0:
+            self.optimizer_g.zero_grad()
+
         self.output = self.net_g(self.lq)
 
         l_total = 0
@@ -110,13 +112,18 @@ class SRModel(BaseModel):
                 l_total += l_style
                 loss_dict['l_style'] = l_style
 
+        # backward pass (разделение на шаги для накопления)
+        l_total = l_total / accumulation_steps
         l_total.backward()
-        self.optimizer_g.step()
+
+        if (current_iter + 1) % accumulation_steps == 0:
+            self.optimizer_g.step()
 
         self.log_dict = self.reduce_loss_dict(loss_dict)
 
         if self.ema_decay > 0:
             self.model_ema(decay=self.ema_decay)
+
 
     def test(self):
         if hasattr(self, 'net_g_ema'):
